@@ -26,7 +26,7 @@ export default function Home() {
         Manchester United last won the league
       </h2>
 
-      <div className="stats shadow-2xl m-5 lg:m-10 flex flex-col lg:flex-row text-center">
+      <div className="stats shadow-2xl m-5 lg:m-10 stats-vertical lg:stats-horizontal  text-center">
         <div className="stat w-80 md:w-100">
           <div className="stat-value text-4xl md:text-7xl">
             {countUpTime.years}
