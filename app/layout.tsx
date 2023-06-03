@@ -15,6 +15,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <meta
+          property="og:image"
+          content="https://storage.googleapis.com/flyweight-cdn/timesince_screenshotV1.png"
+        />
+      </head>
       <body className={inter.className}>{children}</body>
     </html>
   );
