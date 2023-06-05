@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import useCountUpTimer, {
   defaultTimeElapsed,
 } from "@/components/hooks/useCountUpTimer";
+import Link from "next/link";
 
 export default function Home() {
   // Man United's last title: 22 April 2013
@@ -80,6 +81,38 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      <div className="p-2 md:p-20">
+        <div className="divider"></div>
+        <div className="p-2">
+          This is an open source project created and maintained freely by&nbsp;
+          <Link
+            className="link link-accent"
+            target="_blank"
+            href="https://kimeshan.com"
+          >
+            Kimeshan Naidoo
+          </Link>
+          &nbsp;and&nbsp;
+          <Link
+            className="link link-accent"
+            target="_blank"
+            href="https://naidoonotes.com"
+          >
+            Naidoo Notes
+          </Link>
+          . If you like this, please consider contributing.
+        </div>
+        <div className="p-2">
+          <Link
+            className="btn btn-outline btn-primary"
+            target="_blank"
+            href="https://buy.stripe.com/aEU16EgQ80ivaUE288"
+          >
+            Contribute 💵
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
