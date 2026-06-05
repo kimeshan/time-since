@@ -1,0 +1,82 @@
+# Time Since — trophy dataset
+#
+# A "real trophy" = the top-tier domestic LEAGUE (top flight, all eras) OR the
+# European Cup / UEFA CHAMPIONS LEAGUE. Nothing else counts (sorry, FA Cup).
+#
+# Format: pipe-delimited. Lines starting with '#' and blank lines are ignored.
+# Columns:
+#   club | country | league | lastLeagueTitle | lastLeagueSeason | lastUCL | lastUCLSeason | color
+#
+#   lastLeagueTitle / lastUCL : ISO date (YYYY-MM-DD) the title was clinched / the
+#                               final was played, or the literal "never".
+#   *Season fields            : human season label (e.g. 2012-13) or "never".
+#   color                     : club primary colour (hex) for UI theming.
+#
+# League-clinch dates are to the clinching matchday (approximate to the day);
+# Champions League dates are the final. Verify against Wikipedia season pages
+# before relying on exact days. See planning/DATA_MODEL.md.
+#
+# club | country | league | lastLeagueTitle | lastLeagueSeason | lastUCL | lastUCLSeason | color
+
+# --- England (top flight = First Division / Premier League) ---
+Manchester United|England|Premier League|2013-04-22|2012-13|2008-05-21|2007-08|#DA291C
+Manchester City|England|Premier League|2024-05-19|2023-24|2023-06-10|2022-23|#6CABDD
+Liverpool|England|Premier League|2025-04-27|2024-25|2019-06-01|2018-19|#C8102E
+Arsenal|England|Premier League|2026-05-17|2025-26|never|never|#EF0107
+Chelsea|England|Premier League|2017-05-12|2016-17|2021-05-29|2020-21|#034694
+Tottenham Hotspur|England|Premier League|1961-04-17|1960-61|never|never|#132257
+Everton|England|Premier League|1987-05-04|1986-87|never|never|#003399
+Aston Villa|England|Premier League|1981-05-02|1980-81|1982-05-26|1981-82|#95BFE5
+Newcastle United|England|Premier League|1927-04-30|1926-27|never|never|#241F20
+Nottingham Forest|England|Premier League|1978-04-18|1977-78|1980-05-28|1979-80|#DD0000
+Leeds United|England|Premier League|1992-04-26|1991-92|never|never|#FFCD00
+Leicester City|England|Premier League|2016-05-02|2015-16|never|never|#003090
+Wolverhampton Wanderers|England|Premier League|1959-04-18|1958-59|never|never|#FDB913
+Burnley|England|Premier League|1960-05-02|1959-60|never|never|#6C1D45
+Sunderland|England|Premier League|1936-04-25|1935-36|never|never|#EB172B
+Sheffield Wednesday|England|Premier League|1930-05-03|1929-30|never|never|#0066B3
+West Ham United|England|Premier League|never|never|never|never|#7A263A
+Crystal Palace|England|Premier League|never|never|never|never|#1B458F
+Brighton & Hove Albion|England|Premier League|never|never|never|never|#0057B8
+Brentford|England|Premier League|never|never|never|never|#E30613
+AFC Bournemouth|England|Premier League|never|never|never|never|#DA291C
+Fulham|England|Premier League|never|never|never|never|#000000
+
+# --- Spain (top flight = La Liga) ---
+Barcelona|Spain|La Liga|2026-05-10|2025-26|2015-06-06|2014-15|#A50044
+Real Madrid|Spain|La Liga|2024-05-04|2023-24|2024-06-01|2023-24|#FEBE10
+Atlético Madrid|Spain|La Liga|2021-05-22|2020-21|never|never|#CB3524
+Valencia|Spain|La Liga|2004-05-09|2003-04|never|never|#F18E00
+Athletic Bilbao|Spain|La Liga|1984-04-22|1983-84|never|never|#EE2523
+Real Sociedad|Spain|La Liga|1982-04-25|1981-82|never|never|#0067B1
+Sevilla|Spain|La Liga|1946-04-21|1945-46|never|never|#D7141A
+Real Betis|Spain|La Liga|1935-04-28|1934-35|never|never|#00954C
+Deportivo La Coruña|Spain|La Liga|2000-05-19|1999-2000|never|never|#0066B3
+Villarreal|Spain|La Liga|never|never|never|never|#FFE667
+
+# --- Italy (top flight = Serie A) ---
+Inter Milan|Italy|Serie A|2026-05-03|2025-26|2010-05-22|2009-10|#0068A8
+Napoli|Italy|Serie A|2025-05-23|2024-25|never|never|#12A0D7
+Juventus|Italy|Serie A|2020-07-26|2019-20|1996-05-22|1995-96|#000000
+AC Milan|Italy|Serie A|2022-05-22|2021-22|2007-05-23|2006-07|#FB090B
+AS Roma|Italy|Serie A|2001-06-17|2000-01|never|never|#8E1F2F
+Lazio|Italy|Serie A|2000-05-14|1999-2000|never|never|#87D8F7
+Fiorentina|Italy|Serie A|1969-05-11|1968-69|never|never|#592C82
+Atalanta|Italy|Serie A|never|never|never|never|#1E71B8
+
+# --- Germany (top flight = Bundesliga, incl. pre-1963 German championship) ---
+Bayern Munich|Germany|Bundesliga|2026-04-19|2025-26|2020-08-23|2019-20|#DC052D
+Bayer Leverkusen|Germany|Bundesliga|2024-04-14|2023-24|never|never|#E32219
+Borussia Dortmund|Germany|Bundesliga|2012-04-21|2011-12|1997-05-28|1996-97|#FDE100
+VfB Stuttgart|Germany|Bundesliga|2007-05-19|2006-07|never|never|#E32219
+Werder Bremen|Germany|Bundesliga|2004-05-08|2003-04|never|never|#1D9053
+Borussia Mönchengladbach|Germany|Bundesliga|1977-05-21|1976-77|never|never|#000000
+Hamburger SV|Germany|Bundesliga|1983-05-07|1982-83|1983-05-25|1982-83|#0A328C
+
+# --- France (top flight = Ligue 1) ---
+Paris Saint-Germain|France|Ligue 1|2026-05-13|2025-26|2026-05-30|2025-26|#004170
+Olympique de Marseille|France|Ligue 1|2010-05-09|2009-10|1993-05-26|1992-93|#2FAEE0
+AS Monaco|France|Ligue 1|2017-05-17|2016-17|never|never|#E63329
+Olympique Lyonnais|France|Ligue 1|2008-05-11|2007-08|never|never|#1B468F
+Lille OSC|France|Ligue 1|2021-05-23|2020-21|never|never|#E01E13
+AS Saint-Étienne|France|Ligue 1|1981-05-15|1980-81|never|never|#107C41

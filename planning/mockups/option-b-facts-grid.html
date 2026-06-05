@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Time Since — Option B · Facts Grid</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  body { font-family:'Inter',system-ui,sans-serif; }
+  .tnum { font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+  <!-- MOCKUP — Option B: Facts Grid (light, colourful, closest to current daisyUI look) -->
+
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-10">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2 font-extrabold text-lg">
+        <span class="h-8 w-8 rounded-lg bg-slate-900 text-white grid place-items-center text-sm font-black">TS</span>
+        Time Since
+      </div>
+      <!-- Explorer selectors -->
+      <div class="flex gap-2">
+        <select class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium">
+          <option>Any club</option><option>Manchester United</option><option>Arsenal</option><option>Spurs</option>
+        </select>
+        <select class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium">
+          <option>Any real trophy</option><option>The League</option><option>Champions League</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <section class="max-w-6xl mx-auto px-4 pt-10 pb-4 text-center">
+    <h1 class="text-4xl sm:text-6xl font-black tracking-tight">Time Since…</h1>
+    <p class="mt-3 text-lg text-slate-500">your club won a <span class="font-bold text-slate-800">real</span> trophy.
+      <span class="block text-sm mt-1 text-slate-400">Only the league title & the Champions League count. The FA Cup doesn't.</span>
+    </p>
+  </section>
+
+  <main class="max-w-6xl mx-auto px-4 py-6">
+    <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </main>
+
+  <footer class="max-w-6xl mx-auto px-4 py-10 text-sm text-slate-400 text-center">
+    Open-source by Kimeshan Naidoo & Naidoo Notes · The FA Cup doesn't count.
+  </footer>
+
+<script>
+const FACTS = [
+  { club:"Manchester United", comp:"the league",          color:"#DA291C", date:"2013-04-22", note:"2012-13" },
+  { club:"Arsenal",           comp:"the Champions League", color:"#EF0107", date:null,        note:"never — and lost the 2026 final to PSG on pens" },
+  { club:"Tottenham Hotspur", comp:"the league",          color:"#132257", date:"1961-04-17", note:"1960-61" },
+  { club:"Newcastle United",  comp:"the league",          color:"#241F20", date:"1927-04-30", note:"1926-27" },
+  { club:"Liverpool",         comp:"the league",          color:"#C8102E", date:"2025-04-27", note:"2024-25" },
+  { club:"Sevilla",           comp:"La Liga",             color:"#D7141A", date:"1946-04-21", note:"1945-46" },
+  { club:"Chelsea",           comp:"a real trophy",       color:"#034694", date:"2021-05-29", note:"UCL 2020-21" },
+  { club:"Real Madrid",       comp:"the Champions League", color:"#FEBE10", date:"2024-06-01", note:"2023-24" },
+  { club:"West Ham United",   comp:"a real trophy",       color:"#7A263A", date:null,        note:"never" },
+];
+
+function parts(dateStr){
+  const d=new Date()-new Date(dateStr), DAY=864e5;
+  return {
+    years:Math.floor(d/(DAY*365)),
+    months:Math.floor((d%(DAY*365))/(DAY*30)),
+    days:Math.floor((d%(DAY*30))/DAY),
+    hours:Math.floor((d%DAY)/36e5),
+    mins:Math.floor((d%36e5)/6e4),
+    secs:Math.floor((d%6e4)/1e3),
+  };
+}
+function statBlock(n,l){ return `<div class="flex flex-col items-center"><span class="text-3xl font-black tnum leading-none">${n}</span><span class="text-[10px] uppercase tracking-wide text-white/70">${l}</span></div>`; }
+
+function card(f){
+  if(!f.date){
+    return `<article class="rounded-2xl p-5 text-white shadow-lg" style="background:${f.color}">
+      <p class="text-sm/5 opacity-80">Time since</p>
+      <h3 class="text-xl font-extrabold">${f.club} won ${f.comp}</h3>
+      <div class="mt-5 py-4 text-center"><span class="text-5xl font-black">∞</span><div class="text-xs uppercase tracking-widest mt-1 opacity-80">Never</div></div>
+      <p class="mt-3 text-xs opacity-80">${f.note}</p>
+    </article>`;
+  }
+  const p=parts(f.date);
+  return `<article class="rounded-2xl p-5 text-white shadow-lg" style="background:${f.color}">
+    <p class="text-sm/5 opacity-80">Time since</p>
+    <h3 class="text-xl font-extrabold">${f.club} won ${f.comp}</h3>
+    <div class="mt-5 grid grid-cols-3 gap-y-3 bg-black/15 rounded-xl py-4">
+      ${statBlock(p.years,'yrs')}${statBlock(p.months,'mo')}${statBlock(p.days,'days')}
+      ${statBlock(String(p.hours).padStart(2,'0'),'hrs')}${statBlock(String(p.mins).padStart(2,'0'),'min')}${statBlock(String(p.secs).padStart(2,'0'),'sec')}
+    </div>
+    <p class="mt-3 text-xs opacity-80">Last won: ${f.note}</p>
+  </article>`;
+}
+function render(){ document.getElementById('grid').innerHTML = FACTS.map(card).join(''); }
+render(); setInterval(render,1000);
+</script>
+</body>
+</html>

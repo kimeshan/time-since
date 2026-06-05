@@ -5,8 +5,9 @@ import { Analytics } from "@vercel/analytics/react";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Time Since",
-  description: "A visual countup of time since key sporting moments",
+  title: "Time Since — your club won a real trophy",
+  description:
+    "A live count-up of how long it's been since football clubs last won a real trophy — the league or the Champions League. The FA Cup doesn't count.",
 };
 
 export default function RootLayout({

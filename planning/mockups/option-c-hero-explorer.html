@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Time Since — Option C · Hero Explorer</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
+<style>
+  body { font-family:'Inter',system-ui,sans-serif; }
+  .tnum { font-variant-numeric: tabular-nums; }
+  .clubgrad { transition: background 600ms ease; }
+</style>
+</head>
+<body class="min-h-screen text-white">
+  <!-- MOCKUP — Option C: Hero Explorer (bold, minimal, pick-your-club) -->
+  <div id="bg" class="clubgrad min-h-screen" style="background:linear-gradient(160deg,#DA291C,#7a1810)">
+
+    <header class="max-w-5xl mx-auto px-4 py-5 flex items-center justify-between">
+      <span class="font-black tracking-tight text-lg">Time Since</span>
+      <a href="#more" class="text-sm/6 opacity-80 hover:opacity-100">See the table ↓</a>
+    </header>
+
+    <!-- Explorer -->
+    <section class="max-w-5xl mx-auto px-4 pt-8 sm:pt-14 text-center">
+      <p class="uppercase tracking-[0.25em] text-xs opacity-70 mb-6">Pick a club & a competition</p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center max-w-xl mx-auto">
+        <select id="club" class="flex-1 rounded-xl bg-white/15 backdrop-blur px-4 py-3 font-semibold text-white border border-white/20 [&>option]:text-black"></select>
+        <select id="comp" class="flex-1 rounded-xl bg-white/15 backdrop-blur px-4 py-3 font-semibold text-white border border-white/20 [&>option]:text-black">
+          <option value="any">a real trophy</option>
+          <option value="league">the league</option>
+          <option value="ucl">the Champions League</option>
+        </select>
+      </div>
+
+      <!-- Hero readout -->
+      <h1 class="mt-12 text-2xl sm:text-3xl font-semibold opacity-90">Time since
+        <span id="title-club">Manchester United</span> won <span id="title-comp">a real trophy</span></h1>
+
+      <div id="hero" class="mt-8 mb-4 tnum"></div>
+      <p id="sub" class="opacity-70 text-sm"></p>
+
+      <div class="mt-10 flex gap-3 justify-center text-sm">
+        <button class="rounded-full bg-white/15 hover:bg-white/25 px-5 py-2 font-medium">Copy link</button>
+        <button class="rounded-full bg-white/15 hover:bg-white/25 px-5 py-2 font-medium">Share fact</button>
+      </div>
+    </section>
+
+    <!-- Secondary: mini drought table -->
+    <section id="more" class="max-w-3xl mx-auto px-4 py-16">
+      <h2 class="text-sm uppercase tracking-widest opacity-70 mb-4">Longest droughts</h2>
+      <div id="mini" class="rounded-2xl bg-white/10 backdrop-blur divide-y divide-white/10 overflow-hidden"></div>
+    </section>
+
+    <footer class="max-w-5xl mx-auto px-4 py-8 text-sm opacity-60 text-center">
+      The FA Cup doesn't count. · Open-source by Kimeshan Naidoo & Naidoo Notes.
+    </footer>
+  </div>
+
+<script>
+const CLUBS = {
+  "Manchester United":{ color:"#DA291C", league:["2013-04-22","2012-13"], ucl:["2008-05-21","2007-08"] },
+  "Arsenal":          { color:"#EF0107", league:["2026-05-17","2025-26"], ucl:null },
+  "Tottenham Hotspur":{ color:"#132257", league:["1961-04-17","1960-61"], ucl:null },
+  "Liverpool":        { color:"#C8102E", league:["2025-04-27","2024-25"], ucl:["2019-06-01","2018-19"] },
+  "Manchester City":  { color:"#6CABDD", league:["2024-05-19","2023-24"], ucl:["2023-06-10","2022-23"] },
+  "Chelsea":          { color:"#034694", league:["2017-05-12","2016-17"], ucl:["2021-05-29","2020-21"] },
+  "Newcastle United": { color:"#241F20", league:["1927-04-30","1926-27"], ucl:null },
+  "Barcelona":        { color:"#A50044", league:["2026-05-10","2025-26"], ucl:["2015-06-06","2014-15"] },
+  "Real Madrid":      { color:"#c79a10", league:["2024-05-04","2023-24"], ucl:["2024-06-01","2023-24"] },
+  "Sevilla":          { color:"#D7141A", league:["1946-04-21","1945-46"], ucl:null },
+  "West Ham United":  { color:"#7A263A", league:null, ucl:null },
+};
+function darken(hex){ // crude darken for gradient end
+  const n=parseInt(hex.slice(1),16); let r=(n>>16)&255,g=(n>>8)&255,b=n&255;
+  r=Math.round(r*.45); g=Math.round(g*.45); b=Math.round(b*.45);
+  return `rgb(${r},${g},${b})`;
+}
+function lastReal(c){
+  const o=[]; if(c.league)o.push({comp:"league",label:"the league",date:c.league[0],season:c.league[1]});
+  if(c.ucl)o.push({comp:"ucl",label:"the Champions League",date:c.ucl[0],season:c.ucl[1]});
+  if(!o.length)return null; return o.sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
+}
+function pick(name,comp){
+  const c=CLUBS[name];
+  if(comp==="league") return c.league?{label:"the league",date:c.league[0],season:c.league[1]}:null;
+  if(comp==="ucl") return c.ucl?{label:"the Champions League",date:c.ucl[0],season:c.ucl[1]}:null;
+  const lr=lastReal(c); return lr?{label:"a real trophy",date:lr.date,season:lr.season,via:lr.label}:null;
+}
+function parts(dateStr){const d=new Date()-new Date(dateStr),DAY=864e5;return{
+  years:Math.floor(d/(DAY*365)),months:Math.floor((d%(DAY*365))/(DAY*30)),days:Math.floor((d%(DAY*30))/DAY),
+  hours:Math.floor((d%DAY)/36e5),mins:Math.floor((d%36e5)/6e4),secs:Math.floor((d%6e4)/1e3)};}
+
+const clubSel=document.getElementById('club'), compSel=document.getElementById('comp'), bg=document.getElementById('bg');
+clubSel.innerHTML=Object.keys(CLUBS).map(n=>`<option>${n}</option>`).join('');
+
+function heroHTML(p){
+  const c=(n,l,size,o)=>`<div class="flex flex-col"><span class="${size} font-black leading-none" style="opacity:${o}">${n}</span><span class="text-[10px] sm:text-xs uppercase tracking-wider opacity-70 mt-1">${l}</span></div>`;
+  return `<div class="flex flex-wrap justify-center items-end gap-x-4 sm:gap-x-7 gap-y-4">
+    ${c(p.years,'years','text-6xl sm:text-8xl',1)}
+    ${c(p.months,'months','text-4xl sm:text-6xl',.9)}
+    ${c(p.days,'days','text-4xl sm:text-6xl',.8)}
+    ${c(String(p.hours).padStart(2,'0'),'hrs','text-2xl sm:text-4xl',.65)}
+    ${c(String(p.mins).padStart(2,'0'),'min','text-2xl sm:text-4xl',.55)}
+    ${c(String(p.secs).padStart(2,'0'),'sec','text-2xl sm:text-4xl',.45)}
+  </div>`;
+}
+function render(){
+  const name=clubSel.value, comp=compSel.value, c=CLUBS[name];
+  bg.style.background=`linear-gradient(160deg,${c.color},${darken(c.color)})`;
+  document.getElementById('title-club').textContent=name;
+  document.getElementById('title-comp').textContent={any:"a real trophy",league:"the league",ucl:"the Champions League"}[comp];
+  const r=pick(name,comp);
+  if(!r){
+    document.getElementById('hero').innerHTML=`<div class="text-7xl sm:text-9xl font-black">∞</div><div class="uppercase tracking-[0.3em] text-sm mt-3 opacity-70">Never</div>`;
+    document.getElementById('sub').textContent = name==="Arsenal"&&comp==="ucl" ? "Never. (And they lost the 2026 final to PSG on penalties.)" : "Still waiting for the first one.";
+  } else {
+    document.getElementById('hero').innerHTML=heroHTML(parts(r.date));
+    document.getElementById('sub').textContent=`Last won: ${r.season}${r.via?` ("real trophy" via ${r.via})`:''}.`;
+  }
+  // mini table
+  const ranked=Object.entries(CLUBS).map(([n,c])=>({n,c,lr:lastReal(c)}))
+    .sort((a,b)=>{ if(!a.lr)return -1; if(!b.lr)return 1; return new Date(a.lr.date)-new Date(b.lr.date);});
+  document.getElementById('mini').innerHTML=ranked.slice(0,6).map((x,i)=>{
+    const right = x.lr ? `${parts(x.lr.date).years}y ${parts(x.lr.date).months}m` : "Never";
+    return `<button onclick="clubSel.value='${x.n}';render()" class="w-full flex items-center justify-between px-4 py-3 hover:bg-white/10 text-left">
+      <span class="flex items-center gap-3"><span class="opacity-60 w-4">${i+1}</span><span class="h-6 w-6 rounded-full" style="background:${x.c.color}"></span><span class="font-semibold">${x.n}</span></span>
+      <span class="tnum font-semibold opacity-90">${right}</span></button>`;
+  }).join('');
+}
+clubSel.onchange=render; compSel.onchange=render;
+render(); setInterval(render,1000);
+</script>
+</body>
+</html>

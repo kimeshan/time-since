@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Time Since — Option A · The Drought Table</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
+<style>
+  body { font-family: 'Inter', system-ui, sans-serif; }
+  .tnum { font-variant-numeric: tabular-nums; }
+  @keyframes pulse-row { from { background: rgba(239,7,7,.15);} to { background: transparent;} }
+</style>
+</head>
+<body class="bg-neutral-950 text-neutral-100 min-h-screen">
+  <!-- MOCKUP — Option A: The Drought Table (dark, leaderboard-first) -->
+
+  <header class="border-b border-neutral-800">
+    <div class="max-w-5xl mx-auto px-4 py-5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="h-9 w-9 rounded-lg bg-red-600 grid place-items-center font-black">TS</div>
+        <span class="font-extrabold tracking-tight text-lg">Time Since</span>
+      </div>
+      <nav class="hidden sm:flex gap-6 text-sm text-neutral-400">
+        <a class="hover:text-white" href="#table">The Table</a>
+        <a class="hover:text-white" href="#never">Hall of Never</a>
+        <a class="hover:text-white" href="#">Explore</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero fact -->
+  <section class="max-w-5xl mx-auto px-4 pt-12 pb-8 text-center">
+    <p class="uppercase tracking-[0.2em] text-xs text-neutral-500 mb-3">Today's drought</p>
+    <h1 class="text-2xl sm:text-3xl font-extrabold text-neutral-300">
+      Time since <span class="text-red-500">Manchester United</span> won a real trophy
+    </h1>
+    <div id="hero" class="mt-6 flex flex-wrap justify-center gap-3 sm:gap-5 tnum"></div>
+    <p class="mt-4 text-neutral-500 text-sm">Last league title: 2012-13. <span class="italic">Yes, the FA Cup still doesn't count.</span></p>
+  </section>
+
+  <!-- The Drought Table -->
+  <section id="table" class="max-w-5xl mx-auto px-4 py-8">
+    <div class="flex items-end justify-between mb-4">
+      <h2 class="text-xl font-extrabold">🏜️ The Drought Table</h2>
+      <span class="text-xs text-neutral-500">longest wait for a <em>real</em> trophy</span>
+    </div>
+    <div class="overflow-hidden rounded-2xl border border-neutral-800">
+      <table class="w-full text-left">
+        <thead class="bg-neutral-900 text-neutral-400 text-xs uppercase tracking-wider">
+          <tr>
+            <th class="px-3 sm:px-4 py-3 w-10">#</th>
+            <th class="px-3 sm:px-4 py-3">Club</th>
+            <th class="px-3 sm:px-4 py-3 hidden sm:table-cell">Last won</th>
+            <th class="px-3 sm:px-4 py-3 text-right">Time since</th>
+          </tr>
+        </thead>
+        <tbody id="rows" class="divide-y divide-neutral-800 tnum"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Hall of Never -->
+  <section id="never" class="max-w-5xl mx-auto px-4 py-8">
+    <h2 class="text-xl font-extrabold mb-1">∞ The Hall of Never</h2>
+    <p class="text-neutral-500 text-sm mb-4">Clubs still chasing their first real trophy.</p>
+    <div id="nevers" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3"></div>
+  </section>
+
+  <footer class="border-t border-neutral-800 mt-10">
+    <div class="max-w-5xl mx-auto px-4 py-8 text-sm text-neutral-500">
+      An open-source project by Kimeshan Naidoo & Naidoo Notes. The FA Cup doesn't count.
+    </div>
+  </footer>
+
+<script>
+// --- seed data (subset) ---
+const CLUBS = [
+  { name:"Manchester United", color:"#DA291C", league:["2013-04-22","2012-13"], ucl:["2008-05-21","2007-08"] },
+  { name:"Newcastle United",  color:"#9aa0a6", league:["1927-04-30","1926-27"], ucl:null },
+  { name:"Sevilla",           color:"#D7141A", league:["1946-04-21","1945-46"], ucl:null },
+  { name:"Tottenham Hotspur", color:"#5b6cb0", league:["1961-04-17","1960-61"], ucl:null },
+  { name:"Everton",           color:"#003399", league:["1987-05-04","1986-87"], ucl:null },
+  { name:"Leeds United",      color:"#f3c700", league:["1992-04-26","1991-92"], ucl:null },
+  { name:"Valencia",          color:"#F18E00", league:["2004-05-09","2003-04"], ucl:null },
+  { name:"Chelsea",           color:"#3b6fd6", league:["2017-05-12","2016-17"], ucl:["2021-05-29","2020-21"] },
+  { name:"Leicester City",    color:"#3b6fd6", league:["2016-05-02","2015-16"], ucl:null },
+  { name:"Atlético Madrid",   color:"#CB3524", league:["2021-05-22","2020-21"], ucl:null },
+  { name:"Real Madrid",       color:"#FEBE10", league:["2024-05-04","2023-24"], ucl:["2024-06-01","2023-24"] },
+  { name:"Manchester City",   color:"#6CABDD", league:["2024-05-19","2023-24"], ucl:["2023-06-10","2022-23"] },
+  { name:"Liverpool",         color:"#C8102E", league:["2025-04-27","2024-25"], ucl:["2019-06-01","2018-19"] },
+  { name:"Barcelona",         color:"#A50044", league:["2026-05-10","2025-26"], ucl:["2015-06-06","2014-15"] },
+  { name:"Arsenal",           color:"#EF0107", league:["2026-05-17","2025-26"], ucl:null },
+  // Never tier
+  { name:"West Ham United",   color:"#7A263A", league:null, ucl:null },
+  { name:"Brighton",          color:"#0057B8", league:null, ucl:null },
+  { name:"Brentford",         color:"#E30613", league:null, ucl:null },
+  { name:"Crystal Palace",    color:"#1B458F", league:null, ucl:null },
+  { name:"Villarreal",        color:"#caa92b", league:null, ucl:null },
+];
+
+function lastReal(c){
+  const opts = [];
+  if(c.league) opts.push({comp:"League", date:c.league[0], season:c.league[1]});
+  if(c.ucl)    opts.push({comp:"Champions League", date:c.ucl[0], season:c.ucl[1]});
+  if(!opts.length) return null;
+  return opts.sort((a,b)=> new Date(b.date)-new Date(a.date))[0];
+}
+function parts(dateStr){
+  const d = new Date()-new Date(dateStr), DAY=864e5;
+  const years=Math.floor(d/(DAY*365));
+  const months=Math.floor((d%(DAY*365))/(DAY*30));
+  const days=Math.floor((d%(DAY*30))/DAY);
+  const hours=Math.floor((d%DAY)/36e5);
+  const mins=Math.floor((d%36e5)/6e4);
+  const secs=Math.floor((d%6e4)/1e3);
+  return {years,months,days,hours,mins,secs};
+}
+function compact(dateStr){ const p=parts(dateStr); return `${p.years}y ${p.months}m ${p.days}d ${String(p.hours).padStart(2,'0')}:${String(p.mins).padStart(2,'0')}:${String(p.secs).padStart(2,'0')}`; }
+
+// hero blocks
+function heroHTML(p){
+  const cell=(n,l,o)=>`<div class="flex flex-col"><span class="text-4xl sm:text-6xl font-black" style="opacity:${o}">${n}</span><span class="text-[10px] sm:text-xs uppercase tracking-wider text-neutral-500">${l}</span></div>`;
+  return cell(p.years,'years',1)+cell(p.months,'months',.85)+cell(p.days,'days',.7)+cell(p.hours,'hrs',.55)+cell(p.mins,'min',.45)+cell(p.secs,'sec',.35);
+}
+
+const withTrophy = CLUBS.filter(c=>lastReal(c)).sort((a,b)=> new Date(lastReal(a).date)-new Date(lastReal(b).date));
+const nevers = CLUBS.filter(c=>!lastReal(c));
+
+function render(){
+  document.getElementById('hero').innerHTML = heroHTML(parts(lastReal(CLUBS[0]).date));
+  document.getElementById('rows').innerHTML = withTrophy.map((c,i)=>{
+    const lr = lastReal(c);
+    return `<tr class="hover:bg-neutral-900/60">
+      <td class="px-3 sm:px-4 py-3 font-bold text-neutral-500">${i+1}</td>
+      <td class="px-3 sm:px-4 py-3">
+        <div class="flex items-center gap-3">
+          <span class="h-7 w-7 rounded-full shrink-0" style="background:${c.color}"></span>
+          <span class="font-semibold">${c.name}</span>
+        </div>
+        <div class="sm:hidden text-xs text-neutral-500 mt-1">${lr.comp} · ${lr.season}</div>
+      </td>
+      <td class="px-3 sm:px-4 py-3 hidden sm:table-cell text-neutral-400 text-sm">${lr.comp} · ${lr.season}</td>
+      <td class="px-3 sm:px-4 py-3 text-right font-semibold text-red-400 whitespace-nowrap">${compact(lr.date)}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('nevers').innerHTML = nevers.map(c=>`
+    <div class="rounded-xl border border-neutral-800 p-3 flex items-center gap-3">
+      <span class="h-7 w-7 rounded-full shrink-0" style="background:${c.color}"></span>
+      <div><div class="font-semibold text-sm">${c.name}</div><div class="text-xs text-neutral-500">Never · ∞</div></div>
+    </div>`).join('');
+}
+render(); setInterval(render,1000);
+</script>
+</body>
+</html>
