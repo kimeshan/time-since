@@ -53,6 +53,11 @@ const BADGES: { src: string; alt: string; href: string }[] = [
     href: `${REPO}/pulls`,
   },
   {
+    src: "https://img.shields.io/github/license/kimeshan/time-since?style=for-the-badge&color=3b82f6&labelColor=0b1220",
+    alt: "MIT license",
+    href: `${REPO}/blob/main/LICENSE`,
+  },
+  {
     src: "https://img.shields.io/badge/Open%20Source-%E2%9D%A4-EF0107?style=for-the-badge&labelColor=0b1220",
     alt: "Open source",
     href: REPO,
@@ -187,34 +192,44 @@ export default function TimeSinceApp({ clubs }: { clubs: Club[] }) {
             Pick a club &amp; a competition
           </p>
           <div className="mx-auto flex max-w-xl flex-col gap-3 sm:flex-row">
-            <select
-              aria-label="Club"
-              value={slug}
-              onChange={(e) => setSlug(e.target.value)}
-              className="flex-1 rounded-xl border border-white/25 bg-white/15 px-4 py-3 font-semibold outline-none backdrop-blur [&>optgroup]:text-black [&>option]:text-black"
-            >
-              {byCountry.map(([country, list]) => (
-                <optgroup key={country} label={country}>
-                  {list.map((c) => (
-                    <option key={c.slug} value={c.slug}>
-                      {c.name}
-                    </option>
-                  ))}
-                </optgroup>
-              ))}
-            </select>
-            <select
-              aria-label="Competition"
-              value={filter}
-              onChange={(e) => setFilter(e.target.value as CompetitionFilter)}
-              className="flex-1 rounded-xl border border-white/25 bg-white/15 px-4 py-3 font-semibold outline-none backdrop-blur [&>option]:text-black"
-            >
-              {COMPS.map((c) => (
-                <option key={c.value} value={c.value}>
-                  {c.label}
-                </option>
-              ))}
-            </select>
+            <div className="relative flex-1">
+              <select
+                aria-label="Club"
+                value={slug}
+                onChange={(e) => setSlug(e.target.value)}
+                className="w-full appearance-none rounded-xl bg-white px-4 py-3 pr-10 font-semibold text-gray-900 shadow-md outline-none ring-1 ring-black/10 focus:ring-2 focus:ring-white"
+              >
+                {byCountry.map(([country, list]) => (
+                  <optgroup key={country} label={country}>
+                    {list.map((c) => (
+                      <option key={c.slug} value={c.slug}>
+                        {c.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+              <span className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500">
+                ▾
+              </span>
+            </div>
+            <div className="relative flex-1">
+              <select
+                aria-label="Competition"
+                value={filter}
+                onChange={(e) => setFilter(e.target.value as CompetitionFilter)}
+                className="w-full appearance-none rounded-xl bg-white px-4 py-3 pr-10 font-semibold text-gray-900 shadow-md outline-none ring-1 ring-black/10 focus:ring-2 focus:ring-white"
+              >
+                {COMPS.map((c) => (
+                  <option key={c.value} value={c.value}>
+                    {c.label}
+                  </option>
+                ))}
+              </select>
+              <span className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500">
+                ▾
+              </span>
+            </div>
           </div>
 
           <h1 className="mx-auto mt-12 max-w-3xl text-2xl font-semibold opacity-95 sm:text-3xl">
@@ -256,7 +271,7 @@ export default function TimeSinceApp({ clubs }: { clubs: Club[] }) {
               onClick={copyLink}
               className="rounded-full bg-white/20 px-5 py-2 text-sm font-medium hover:bg-white/30"
             >
-              {copied ? "Copied!" : "Copy link"}
+              {copied ? "Copied!" : "Share"}
             </button>
           </div>
           <p className="mt-6 text-xs italic opacity-70">
