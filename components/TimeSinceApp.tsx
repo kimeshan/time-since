@@ -39,6 +39,58 @@ const COMPS: { value: CompetitionFilter; label: string }[] = [
   { value: "ucl", label: "the Champions League" },
 ];
 
+const REPO = "https://github.com/kimeshan/time-since";
+
+const BADGES: { src: string; alt: string; href: string }[] = [
+  {
+    src: "https://img.shields.io/github/stars/kimeshan/time-since?style=for-the-badge&logo=github&label=Star&color=EF0107&labelColor=0b1220",
+    alt: "GitHub stars",
+    href: REPO,
+  },
+  {
+    src: "https://img.shields.io/badge/PRs-welcome-22c55e?style=for-the-badge&labelColor=0b1220",
+    alt: "PRs welcome",
+    href: `${REPO}/pulls`,
+  },
+  {
+    src: "https://img.shields.io/badge/Open%20Source-%E2%9D%A4-EF0107?style=for-the-badge&labelColor=0b1220",
+    alt: "Open source",
+    href: REPO,
+  },
+  {
+    src: "https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white",
+    alt: "Built with Next.js",
+    href: "https://nextjs.org",
+  },
+  {
+    src: "https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white",
+    alt: "Styled with Tailwind CSS",
+    href: "https://tailwindcss.com",
+  },
+];
+
+function GitHubMark({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden className={className}>
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
+    </svg>
+  );
+}
+
+function Badge({ src, alt, href }: { src: string; alt: string; href: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className="inline-block transition-transform hover:-translate-y-0.5"
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt={alt} className="h-7" />
+    </a>
+  );
+}
+
 export default function TimeSinceApp({ clubs }: { clubs: Club[] }) {
   const bySlug = useMemo(
     () => new Map(clubs.map((c) => [c.slug, c])),
@@ -110,9 +162,24 @@ export default function TimeSinceApp({ clubs }: { clubs: Club[] }) {
       >
         <header className="mx-auto flex max-w-5xl items-center justify-between">
           <span className="text-lg font-black tracking-tight">Time Since</span>
-          <a href="#grid" className="text-sm opacity-80 hover:opacity-100">
-            More facts ↓
-          </a>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <a
+              href="#grid"
+              className="hidden text-sm opacity-80 hover:opacity-100 sm:inline"
+            >
+              More facts ↓
+            </a>
+            <a
+              href={REPO}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Star Time Since on GitHub"
+              className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1.5 text-sm font-semibold hover:bg-white/30"
+            >
+              <GitHubMark />
+              <span>Star on GitHub</span>
+            </a>
+          </div>
         </header>
 
         <div className="mx-auto max-w-5xl pt-10 text-center">
@@ -258,36 +325,52 @@ export default function TimeSinceApp({ clubs }: { clubs: Club[] }) {
       </section>
 
       {/* ---------- Footer ---------- */}
-      <footer className="border-t border-gray-200">
-        <div className="mx-auto max-w-6xl px-4 py-10 text-center text-sm text-gray-500">
-          <p>
-            An open-source project created and maintained freely by{" "}
-            <Link
-              className="link link-accent"
-              target="_blank"
-              href="https://kimeshan.com"
-            >
-              Kimeshan Naidoo
-            </Link>{" "}
-            and{" "}
-            <Link
-              className="link link-accent"
-              target="_blank"
-              href="https://naidoonotes.com"
-            >
-              Naidoo Notes
-            </Link>
-            . The FA Cup still doesn&apos;t count.
+      <footer className="mt-6 bg-gray-900 text-gray-300">
+        <div className="mx-auto max-w-6xl px-4 py-14 text-center">
+          <h2 className="text-2xl font-black tracking-tight text-white">
+            Free &amp; open source ❤️
+          </h2>
+          <p className="mx-auto mt-2 max-w-md text-sm text-gray-400">
+            Spotted a wrong date or a missing club? The whole dataset is one text
+            file — PRs welcome.
           </p>
-          <div className="mt-4">
-            <Link
-              className="btn btn-outline btn-primary btn-sm"
+
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+            {BADGES.map((b) => (
+              <Badge key={b.alt} {...b} />
+            ))}
+          </div>
+
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <a
+              href={REPO}
               target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-200"
+            >
+              <GitHubMark />
+              View on GitHub
+            </a>
+            <Link
               href="https://buy.stripe.com/aEU16EgQ80ivaUE288"
+              target="_blank"
+              className="inline-flex items-center gap-2 rounded-full border border-white/25 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
             >
               Contribute 💵
             </Link>
           </div>
+
+          <p className="mt-8 text-sm text-gray-500">
+            Created and maintained freely by{" "}
+            <Link
+              className="font-medium text-gray-300 underline-offset-2 hover:text-white hover:underline"
+              target="_blank"
+              href="https://kimeshan.com"
+            >
+              Kimeshan Naidoo
+            </Link>
+            . The FA Cup still doesn&apos;t count.
+          </p>
         </div>
       </footer>
     </div>
