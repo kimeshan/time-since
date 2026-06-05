@@ -53,7 +53,7 @@ const BADGES: { src: string; alt: string; href: string }[] = [
     href: `${REPO}/pulls`,
   },
   {
-    src: "https://img.shields.io/github/license/kimeshan/time-since?style=for-the-badge&color=3b82f6&labelColor=0b1220",
+    src: "https://img.shields.io/badge/License-MIT-3b82f6?style=for-the-badge&labelColor=0b1220",
     alt: "MIT license",
     href: `${REPO}/blob/main/LICENSE`,
   },

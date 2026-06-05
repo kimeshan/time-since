@@ -7,7 +7,7 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/kimeshan/time-since?style=for-the-badge&logo=github&label=Star&color=EF0107&labelColor=0b1220)](https://github.com/kimeshan/time-since)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-22c55e?style=for-the-badge&labelColor=0b1220)](https://github.com/kimeshan/time-since/pulls)
-[![MIT license](https://img.shields.io/github/license/kimeshan/time-since?style=for-the-badge&color=3b82f6&labelColor=0b1220)](./LICENSE)
+[![MIT license](https://img.shields.io/badge/License-MIT-3b82f6?style=for-the-badge&labelColor=0b1220)](./LICENSE)
 [![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 
